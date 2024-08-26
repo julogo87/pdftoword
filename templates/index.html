@@ -4,36 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF to Word Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Convert PDF to Word</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="pdf_file" accept="application/pdf" required>
-        <button type="submit">Convert</button>
-    </form>
-    <div id="result"></div>
-
-    <script>
-        document.getElementById('uploadForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const formData = new FormData(document.getElementById('uploadForm'));
-            const response = await fetch('/convert', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'converted.docx';
-                document.getElementById('result').appendChild(a);
-                a.click();
-            } else {
-                alert('Conversion failed!');
-            }
-        }
-    </script>
+    <div class="container">
+        <h1>Convert PDF to Word</h1>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="application/pdf" required>
+            <button type="submit">Convert</button>
+        </form>
+    </div>
 </body>
 </html>
