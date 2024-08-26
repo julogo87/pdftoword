@@ -23,8 +23,8 @@ def index():
         can = canvas.Canvas(packet, pagesize=letter)
 
         # Configuración del rectángulo
-        x = 50  # Posición horizontal del rectángulo
-        y = 350  # Posición vertical del rectángulo
+        x = 25  # Posición horizontal del rectángulo
+        y = 450  # Posición vertical del rectángulo
         width = 100
         height = 50
 
