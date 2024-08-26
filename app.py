@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+0from flask import Flask, render_template, request, send_file
 from io import BytesIO
 from PyPDF2 import PdfReader, PdfWriter
 from reportlab.pdfgen import canvas
@@ -24,7 +24,7 @@ def index():
 
         # Configuración del rectángulo
         x = 25  # Posición horizontal del rectángulo
-        y = 40  # Posición vertical del rectángulo
+        y = 400  # Posición vertical del rectángulo
         width = 100
         height = 50
 
