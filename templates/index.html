@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to Word Converter</title>
+    <title>PDF Text Replacement</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Convert PDF to Word</h1>
+        <h1>Replace Text in PDF</h1>
         <form method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept="application/pdf" required>
-            <button type="submit">Convert</button>
+            <input type="file" name="file" accept="application/pdf" required><br><br>
+            <label for="old_text">Text to Replace:</label><br>
+            <input type="text" name="old_text" id="old_text"><br><br>
+            <label for="new_text">New Text:</label><br>
+            <input type="text" name="new_text" id="new_text"><br><br>
+            <button type="submit">Replace and Download</button>
         </form>
     </div>
 </body>
