@@ -1,30 +1,38 @@
-pip install Flask python-docx PyPDF2 pdf2docx
-
-from flask import Flask, request, send_file
+from flask import Flask, request, render_template, send_file, redirect, url_for
 import os
+from werkzeug.utils import secure_filename
 from pdf2docx import Converter
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads/'
 
-@app.route('/convert', methods=['POST'])
-def convert_pdf_to_word():
-    if 'pdf_file' not in request.files:
-        return "No file uploaded", 400
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
 
-    pdf_file = request.files['pdf_file']
-    pdf_path = os.path.join("uploads", pdf_file.filename)
-    word_path = pdf_path.replace('.pdf', '.docx')
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            return redirect(request.url)
+        if file and file.filename.endswith('.pdf'):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
 
-    pdf_file.save(pdf_path)
+            # Convert PDF to Word
+            word_filename = filename.replace('.pdf', '.docx')
+            word_path = os.path.join(app.config['UPLOAD_FOLDER'], word_filename)
+            cv = Converter(file_path)
+            cv.convert(word_path)
+            cv.close()
 
-    # Convert PDF to Word
-    cv = Converter(pdf_path)
-    cv.convert(word_path)
-    cv.close()
+            return send_file(word_path, as_attachment=True)
 
-    return send_file(word_path, as_attachment=True)
+    return render_template('index.html')
 
 if __name__ == '__main__':
-    if not os.path.exists("uploads"):
-        os.makedirs("uploads")
     app.run(debug=True)
+
