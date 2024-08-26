@@ -1,3 +1,5 @@
+pip install Flask python-docx PyPDF2 pdf2docx
+
 from flask import Flask, request, send_file
 import os
 from pdf2docx import Converter
