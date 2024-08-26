@@ -1,7 +1,8 @@
 from flask import Flask, request, render_template, send_file, redirect, url_for
 import os
 from werkzeug.utils import secure_filename
-from pdf2docx import Converter
+from PyPDF2 import PdfReader, PdfWriter
+from io import BytesIO
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
@@ -9,27 +10,38 @@ app.config['UPLOAD_FOLDER'] = 'uploads/'
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
+def replace_text_in_pdf(file_path, old_text, new_text):
+    reader = PdfReader(file_path)
+    writer = PdfWriter()
+    for page in reader.pages:
+        text = page.extract_text()
+        if old_text in text:
+            text = text.replace(old_text, new_text)
+            page_text = page.extract_text()
+            page_text = page_text.replace(old_text, new_text)
+            writer.add_page(page)
+    output = BytesIO()
+    writer.write(output)
+    return output
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        if 'file' not in request.files:
-            return redirect(request.url)
-        file = request.files['file']
-        if file.filename == '':
-            return redirect(request.url)
+        file = request.files.get('file')
+        old_text = request.form.get('old_text')
+        new_text = request.form.get('new_text')
+
         if file and file.filename.endswith('.pdf'):
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
 
-            # Convert PDF to Word
-            word_filename = filename.replace('.pdf', '.docx')
-            word_path = os.path.join(app.config['UPLOAD_FOLDER'], word_filename)
-            cv = Converter(file_path)
-            cv.convert(word_path)
-            cv.close()
+            if old_text and new_text:
+                output = replace_text_in_pdf(file_path, old_text, new_text)
+                output.seek(0)
+                return send_file(output, as_attachment=True, download_name=filename, mimetype='application/pdf')
 
-            return send_file(word_path, as_attachment=True)
+            return send_file(file_path, as_attachment=True)
 
     return render_template('index.html')
 
