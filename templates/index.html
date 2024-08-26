@@ -3,20 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Text Replacement</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>PDF Editor</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Replace Text in PDF</h1>
-        <form method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept="application/pdf" required><br><br>
-            <label for="old_text">Text to Replace:</label><br>
-            <input type="text" name="old_text" id="old_text"><br><br>
-            <label for="new_text">New Text:</label><br>
-            <input type="text" name="new_text" id="new_text"><br><br>
-            <button type="submit">Replace and Download</button>
-        </form>
-    </div>
+    <h1>Añadir recuadro a PDF</h1>
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <label for="text">Texto a añadir:</label><br>
+        <textarea id="text" name="text" rows="3" cols="30"></textarea><br><br>
+        <label for="pdf_file">Selecciona un archivo PDF:</label>
+        <input type="file" id="pdf_file" name="pdf_file" accept="application/pdf"><br><br>
+        <button type="submit">Subir y Modificar PDF</button>
+    </form>
 </body>
 </html>
