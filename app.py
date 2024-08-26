@@ -24,7 +24,7 @@ def index():
 
         # Configuración del rectángulo
         x = 25  # Posición horizontal del rectángulo
-        y = 450  # Posición vertical del rectángulo
+        y = 40  # Posición vertical del rectángulo
         width = 100
         height = 50
 
