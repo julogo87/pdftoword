@@ -23,10 +23,10 @@ def index():
         can = canvas.Canvas(packet, pagesize=letter)
 
         # Configuración del rectángulo
-        x = 50  # Posición horizontal del rectángulo
-        y = 700  # Posición vertical del rectángulo
-        width = 200
-        height = 100
+        x = 20  # Posición horizontal del rectángulo
+        y = 900  # Posición vertical del rectángulo
+        width = 100
+        height = 50
 
         # Dibujar el rectángulo
         can.setStrokeColor(colors.black)
