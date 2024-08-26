@@ -2,11 +2,6 @@ from flask import Flask, request, render_template, send_file, redirect, url_for
 import os
 from werkzeug.utils import secure_filename
 from pdf2docx import Converter
-import os
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
@@ -39,5 +34,6 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
 
